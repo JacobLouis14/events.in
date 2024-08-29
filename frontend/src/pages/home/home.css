@@ -1,0 +1,92 @@
+.carosel-Container {
+  height: 100vh;
+  position: relative;
+}
+.darkOverly {
+  background: radial-gradient(rgba(27, 38, 59, 0.5) 10%, #20242b 65%);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+.carouselDetailContainer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  overflow: hidden;
+  padding: 0px 35px;
+  max-height: 60%;
+  display: flex;
+}
+.nameWrapper h4 {
+  font-family: "Jomhuria";
+  font-size: 15vw;
+  line-height: 0.5em; /*130px*/
+  /* height: 230px; */
+  display: inline-block;
+  max-width: 100%;
+  white-space: wrap;
+  /* overflow: hidden; */
+  text-overflow: ellipsis;
+  margin: 0;
+}
+.col-wrapper {
+  padding: 0px 20px;
+  display: flex;
+  align-items: end;
+}
+.detail-container button {
+  width: 200px;
+  background-color: #d90429;
+  color: white;
+}
+@media (max-width: 768px) {
+  .nameWrapper h4 {
+    font-size: 20vw;
+    /* line-height: 100px;
+    height: 180px; */
+  }
+  .col-wrapper {
+    padding: 0px 0px;
+  }
+  .detail-container button {
+    width: 100%;
+  }
+  .detail-container p {
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: start;
+  }
+}
+
+/* Trending section */
+.trendingHeader {
+  height: 130px;
+  background-color: #edf2f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Jomhuria";
+}
+.trendingBody {
+  min-height: 80vh;
+  background-color: #20242b;
+  overflow: hidden;
+}
+
+/* Category Section */
+.cat-container {
+  height: 150px;
+  width: 250px;
+  position: relative;
+  overflow: hidden;
+}
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Jomhuria";
+  color: white;
+  font-size: 60px;
+}

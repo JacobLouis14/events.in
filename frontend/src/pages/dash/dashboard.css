@@ -1,0 +1,24 @@
+/* Shows Section */
+.action-bar {
+  display: flex;
+  justify-content: center;
+  height: min-content;
+}
+
+.dash-shows {
+  background-color: #20242b;
+  min-height: 100vh;
+}
+.shows-list-container {
+  padding: 10px 30px;
+  display: flex;
+}
+.btn-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.card-wrapper {
+  border: 1px solid white;
+  margin-bottom: 20px;
+}
