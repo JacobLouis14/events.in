@@ -22,30 +22,6 @@ const TrendingSection = ({ tevents }) => {
               <Card event={event} />
             </Col>
           ))}
-          {/* <Col
-            md={4}
-            sm={6}
-            lg={3}
-            className="d-flex justify-content-center align-items-center"
-          >
-            <Card />
-          </Col>
-          <Col
-            md={4}
-            sm={6}
-            lg={3}
-            className="d-flex justify-content-center align-items-center"
-          >
-            <Card />
-          </Col>
-          <Col
-            md={4}
-            sm={6}
-            lg={3}
-            className="d-flex justify-content-center align-items-center"
-          >
-            <Card />
-          </Col> */}
         </Row>
       </div>
     </div>

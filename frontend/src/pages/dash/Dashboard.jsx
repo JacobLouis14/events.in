@@ -6,6 +6,7 @@ import "./dashboard.css";
 import Appbar from "../../components/Appbar";
 import ShowsDashboard from "../../components/dashboard/shows";
 import CategoryDashboard from "../../components/dashboard/category";
+import LogOutBtn from "../../components/auth/logout";
 
 const Dashboard = () => {
   const [selectedMenuIndex, setSelectedMenuIndex] = useState(0);
@@ -21,7 +22,6 @@ const Dashboard = () => {
             borderBottom: 1,
             borderColor: "divider",
             display: "flex",
-            justifyContent: "center",
             backgroundColor: "white",
           }}
         >
@@ -34,6 +34,9 @@ const Dashboard = () => {
             <Tab label="Shows" />
             <Tab label="Category" />
           </Tabs>
+          <div className="ms-auto p-1">
+            <LogOutBtn />
+          </div>
         </Box>
         {menuViewPages.map((comp, index) => (
           <div key={index}>{index === selectedMenuIndex && comp}</div>

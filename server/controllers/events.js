@@ -197,4 +197,96 @@ const deleteEvent = async (req, res) => {
   }
 };
 
-module.exports = { getAllEvents, getSpecificEvent, addEvent, deleteEvent };
+// filtered events Handler
+const filterEvents = async (req, res) => {
+  try {
+    const { category, price, sort } = req.query;
+
+    // no query returning all data
+    if (!category && !price && !sort) {
+      const events = await eventsModel.find({});
+      return res.status(200).json({ message: "all events", data: events });
+    }
+
+    let minPrice;
+    let maxPrice;
+    // correcting price data
+    switch (price) {
+      case "<1000":
+        minPrice = 0;
+        maxPrice = 999;
+        break;
+      case ">2000":
+        minPrice = 2001;
+        maxPrice = Infinity;
+        break;
+      case "1000-2000":
+        minPrice = 1000;
+        maxPrice = 2000;
+        break;
+      default:
+        break;
+    }
+
+    // filtered handler
+    const filteredData = await eventsModel.find({
+      $and: [
+        category ? { category: category } : {},
+        price
+          ? {
+              tickets: {
+                $elemMatch: {
+                  price: {
+                    $gte: minPrice,
+                    $lte: maxPrice,
+                  },
+                },
+              },
+            }
+          : {},
+      ],
+    });
+
+    if (filteredData.length === 0) {
+      return res
+        .status(204)
+        .json({ message: "No events Found", data: filteredData });
+    }
+
+    // sort handler
+    if (sort) {
+      switch (sort) {
+        case "1":
+          filteredData.sort((a, b) => {
+            const aMinPrice = Math.min(...a.tickets.map((t) => t.price));
+            const bMinPrice = Math.min(...b.tickets.map((t) => t.price));
+            console.log(`a-min ${aMinPrice}`);
+            console.log(`b-min ${bMinPrice}`);
+            return aMinPrice - bMinPrice;
+          });
+          break;
+        case "2":
+          filteredData.sort((a, b) => {
+            const aMaxPrice = Math.max(...a.tickets.map((t) => t.price));
+            const bMaxPrice = Math.max(...b.tickets.map((t) => t.price));
+            return bMaxPrice - aMaxPrice;
+          });
+          break;
+        default:
+          break;
+      }
+    }
+
+    return res.status(200).json({ message: "success", data: filteredData });
+  } catch (error) {
+    return res.status(500).json({ message: "Internel server error", error });
+  }
+};
+
+module.exports = {
+  getAllEvents,
+  getSpecificEvent,
+  addEvent,
+  deleteEvent,
+  filterEvents,
+};

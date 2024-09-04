@@ -26,12 +26,13 @@ const CategorySection = () => {
         {isLoading && <div>Loading</div>}
         {!isLoading && data && (
           <Row className="w-100">
-            {data?.map((cat) => (
+            {data?.map((cat, index) => (
               <Col
                 md={4}
                 sm={6}
                 lg={3}
                 className="mb-4 d-flex justify-content-center align-items-center"
+                key={index}
               >
                 <div className="cat-container rounded-4">
                   <img

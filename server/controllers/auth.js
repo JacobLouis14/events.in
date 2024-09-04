@@ -28,6 +28,7 @@ const registerUser = async (req, res) => {
       usertype: userType,
     }).save();
     return res.status(200).json({
+      message: "creation successfull",
       savedUser,
     });
   } catch (error) {
@@ -110,22 +111,6 @@ const refreshAccessToken = async (req, res) => {
   }
 };
 
-const userDataHandler = async (req, res) => {
-  const { userId } = req.user;
-  if (!userId) return res.status(401).json({ message: "unauthorized" });
-  try {
-    const user = await userModel.findOne({ _id: userId });
-    if (!user) {
-      return res
-        .status(406)
-        .json({ message: "user not found", desc: "check passing id" });
-    }
-    return res.status(200).json({ message: "success", user });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server error", error });
-  }
-};
-
 const dummyProtected = (req, res) => {
   try {
     res.status(200).json({ message: "Success", req: req.cookies });
@@ -138,6 +123,5 @@ module.exports = {
   registerUser,
   loginUser,
   refreshAccessToken,
-  userDataHandler,
   dummyProtected,
 };

@@ -8,17 +8,14 @@ const AuthRedirector = () => {
   const navigate = useNavigate();
   const { token, user } = useSelector((state) => state.auth);
 
-  // useEffect(() => {
-  //   if (token == null) {
-  //     navigate("/login");
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (token == null) {
+      navigate("/");
+    }
+  }, [token]);
 
-  if (!token) return null;
-
-  // const isAdmin = user?.usertype === "admin" ? true : false;
-  // return isAdmin ? <Dashboard /> : <Profile user={user} />;
-  return <Dashboard />;
+  const isAdmin = user?.usertype === "admin" ? true : false;
+  return isAdmin ? <Dashboard /> : <Profile user={user} />;
 };
 
 export default AuthRedirector;

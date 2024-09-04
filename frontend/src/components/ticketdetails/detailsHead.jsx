@@ -5,15 +5,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTicket } from "@fortawesome/free-solid-svg-icons";
 import { localiseDate, seperateDates } from "../../utils/formatDate";
 
+import TicketCnfModal from "./ticketcnfmodal";
+import toastHandler from "../../utils/toast";
+
 const DetailsHead = ({ event }) => {
   const [selectedDateIndex, setSelectedDateIndex] = useState(null);
   const [selectedTickettypeIndex, setSelectedtickettypeIndex] = useState(null);
   const [date, setDate] = useState([]);
+  const [selectedTicketDetails, setSelectedTicketDetails] = useState({
+    date: "",
+    selectedticket: "",
+    qty: "",
+    bookedTime: "",
+  });
+
+  // modal data
+  const [modalShow, setModalShow] = useState(false);
+  const handleModalShow = () => setModalShow(true);
+  const handleModalClose = () => setModalShow(false);
+
+  const modalShowHandler = () => {
+    const { date, selectedticket } = selectedTicketDetails;
+    if (!date || !selectedticket) {
+      toastHandler({ info: "select date and ticket type" });
+      return;
+    }
+    date && selectedticket && handleModalShow();
+  };
 
   // date Handling
   const dateChecking = () => {
     if (!event?.enddate) {
-      setDate([localiseDate(event?.startdate)]);
+      setDate([event?.startdate]);
     } else {
       setDate(seperateDates(event?.startdate, event?.enddate));
     }
@@ -49,7 +72,7 @@ const DetailsHead = ({ event }) => {
               </Col>
               <Col md={7} className="ms-md-5 card-details">
                 <h5>{event?.title}</h5>
-                <h6>{event?.startdate}</h6>
+                <h6>{localiseDate(event?.startdate)}</h6>
                 <p>{event.desc}</p>
               </Col>
             </Row>
@@ -74,12 +97,20 @@ const DetailsHead = ({ event }) => {
                     onClick={() => {
                       if (selectedDateIndex === index) {
                         setSelectedDateIndex(null);
+                        setSelectedTicketDetails({
+                          ...selectedTicketDetails,
+                          date: null,
+                        });
                       } else {
                         setSelectedDateIndex(index);
+                        setSelectedTicketDetails({
+                          ...selectedTicketDetails,
+                          date: date,
+                        });
                       }
                     }}
                   >
-                    <p className="mb-0">{date}</p>
+                    <p className="mb-0">{localiseDate(date)}</p>
                   </button>
                 ))}
               </div>
@@ -92,7 +123,7 @@ const DetailsHead = ({ event }) => {
                 {event?.tickets?.map((ticket, index) => (
                   <button
                     key={index}
-                    className="me-3 mb-3 btn date-container border d-flex justify-content-center align-items-center"
+                    className="me-3 mb-3 btn border date-container d-flex justify-content-center align-items-center flex-column"
                     style={
                       selectedTickettypeIndex === index
                         ? { backgroundColor: "#20242b", color: "white" }
@@ -101,8 +132,16 @@ const DetailsHead = ({ event }) => {
                     onClick={() => {
                       if (selectedTickettypeIndex === index) {
                         setSelectedtickettypeIndex(null);
+                        setSelectedTicketDetails({
+                          ...selectedTicketDetails,
+                          selectedticket: null,
+                        });
                       } else {
                         setSelectedtickettypeIndex(index);
+                        setSelectedTicketDetails({
+                          ...selectedTicketDetails,
+                          selectedticket: ticket.type,
+                        });
                       }
                     }}
                   >
@@ -116,7 +155,10 @@ const DetailsHead = ({ event }) => {
             md={2}
             className="d-flex align-items-center justify-content-center"
           >
-            <button className="btn btn-danger h-100 book-btn">
+            <button
+              className="btn btn-danger h-100 book-btn"
+              onClick={modalShowHandler}
+            >
               <FontAwesomeIcon
                 icon={faTicket}
                 size="2xl"
@@ -127,6 +169,13 @@ const DetailsHead = ({ event }) => {
           </Col>
         </Row>
       </div>
+      <TicketCnfModal
+        show={modalShow}
+        handleClose={handleModalClose}
+        selectedData={selectedTicketDetails}
+        event={event}
+        selectedDataHandler={setSelectedTicketDetails}
+      />
     </div>
   );
 };

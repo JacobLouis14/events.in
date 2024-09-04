@@ -22,7 +22,17 @@ const LoginView = () => {
     const res = await dispatch(authLoginApi(loginData));
     console.log(res);
     if (res.payload.token) {
-      navigate("/");
+      const redirect = sessionStorage.getItem("redirect");
+      const isLogOut = sessionStorage.getItem("isLogOut");
+      if (isLogOut) {
+        sessionStorage.removeItem("isLogOut");
+      }
+      if (redirect) {
+        sessionStorage.removeItem("redirect");
+        navigate(redirect, { replace: true });
+      } else {
+        navigate("/");
+      }
     }
 
     clearForm();

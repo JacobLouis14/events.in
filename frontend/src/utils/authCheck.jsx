@@ -9,7 +9,11 @@ const AuthCheck = ({ children }) => {
   useAxios(); // axios instance
 
   useEffect(() => {
-    dispatch(userDataApiHandler());
+    const isLogOut = sessionStorage.getItem("isLogOut");
+    console.log(isLogOut);
+    if (!isLogOut) {
+      dispatch(userDataApiHandler());
+    }
   }, [token]);
   // console.log(`from authCheck${token}`);
 

@@ -16,9 +16,6 @@ router.post("/login", loginUser);
 // refresh-token
 router.get("/refresh-accesstoken", refreshAccessToken);
 
-// userData
-router.get("/user-data", isAuthorized, userDataHandler);
-
 // dummy protected routes
 router.get("/protected", isAuthorized, dummyProtected);
 

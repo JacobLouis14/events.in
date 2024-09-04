@@ -8,7 +8,7 @@ export const userDataApiHandler = createAsyncThunk(
   "auth/userDataApiHandler",
   async (_, { rejectWithValue }) => {
     try {
-      const res = await privateApiInstance.get("/auth/user-data");
+      const res = await privateApiInstance.get("/users/user-data");
       return res.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -81,14 +81,53 @@ export const deleteEventApiHandler = createAsyncThunk(
   }
 );
 
-//////////////////////////////////////////////normal insatance
+// book events
+export const bookEventsApiHandler = createAsyncThunk(
+  "auth/bookEventsApiHandler",
+  async (ticketData, { rejectWithValue }) => {
+    try {
+      const res = await privateApiInstance.post(
+        `/users/book-event/${ticketData.id}`,
+        ticketData.data
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 
+// cancel booked tickets
+export const cancelBookedTicketApiHandler = createAsyncThunk(
+  "auth/cancelBookedTicketApiHandler",
+  async (ticketDetails, { rejectWithValue }) => {
+    try {
+      const res = await privateApiInstance.post(
+        "/users/cancel-event",
+        ticketDetails
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
 // login api
 export const loginApiHandler = async (loginData) => {
   try {
     return await privateApiInstance.post("/auth/login", loginData);
   } catch (error) {
     throw error;
+  }
+};
+//////////////////////////////////////////////normal insatance
+
+// register api
+export const registerApiHandler = async (registerData) => {
+  try {
+    return await serverApiInstance.post("/auth/register", registerData);
+  } catch (error) {
+    return error;
   }
 };
 
@@ -127,3 +166,18 @@ export const getSpecificEventData = async (id) => {
     return error;
   }
 };
+
+// filter events api
+export const filterEventsApiHandler = createAsyncThunk(
+  "events/filterEventsApiHandler",
+  async (filterData, { rejectWithValue }) => {
+    try {
+      const res = await serverApiInstance.get(
+        `/events/get-filteredevents?category=${filterData.category}&price=${filterData.price}&sort=${filterData.sort}`
+      );
+      return res.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);

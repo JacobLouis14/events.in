@@ -4,12 +4,12 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import Form from "react-bootstrap/Form";
-import toastHandler from "../../utils/toast";
 import { useDispatch, useSelector } from "react-redux";
 import {
   eventAddApiHandler,
   getCategoriesApiHandler,
 } from "../../services/allapis";
+import toastHandler from "../../utils/toast";
 
 const AddShowModal = ({ show, handleClose }) => {
   const dispatch = useDispatch();

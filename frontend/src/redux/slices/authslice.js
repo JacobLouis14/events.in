@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginApiHandler, userDataApiHandler } from "../../services/allapis";
+import {
+  bookEventsApiHandler,
+  cancelBookedTicketApiHandler,
+  loginApiHandler,
+  userDataApiHandler,
+} from "../../services/allapis";
 import toastHandler from "../../utils/toast";
 
 // Login api
@@ -56,7 +61,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         console.log(action);
 
-        toastHandler({ error: action.payload.data.message });
+        toastHandler({ error: action.payload.response.data.message });
       });
     // userData handler
     builder
@@ -64,14 +69,61 @@ const authSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(userDataApiHandler.fulfilled, (state, action) => {
-        state.user = action.payload;
+        state.user = action.payload.user;
         state.error = null;
         state.isLoading = false;
       })
       .addCase(userDataApiHandler.rejected, (state, action) => {
         state.error = action.payload.response;
         state.isLoading = false;
-        console.log(action);
+      });
+    // book event data handling
+    builder
+      .addCase(bookEventsApiHandler.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(bookEventsApiHandler.fulfilled, (state, action) => {
+        state.user = action.payload.data;
+        console.log(action.payload.data);
+
+        state.error = null;
+        state.isLoading = false;
+        toastHandler({ data: action.payload.message });
+      })
+      .addCase(bookEventsApiHandler.rejected, (state, action) => {
+        state.error = action.payload.response.data;
+        state.isLoading = false;
+        if (action.payload.response.status === 401) {
+          toastHandler({
+            alert: action.payload.response.data.message + ", please login",
+          });
+        } else {
+          toastHandler({ error: action.payload.response.data.message });
+        }
+      });
+    // cancel booked events
+    builder
+      .addCase(cancelBookedTicketApiHandler.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(cancelBookedTicketApiHandler.fulfilled, (state, action) => {
+        state.user = action.payload.data;
+        console.log(action.payload.data);
+
+        state.error = null;
+        state.isLoading = false;
+        toastHandler({ data: action.payload.message });
+      })
+      .addCase(cancelBookedTicketApiHandler.rejected, (state, action) => {
+        state.error = action.payload.response.data;
+        state.isLoading = false;
+        if (action.payload.response.status === 401) {
+          toastHandler({
+            alert: action.payload.response.data.message + ", please login",
+          });
+        } else {
+          toastHandler({ error: action.payload.response.data.message });
+        }
       });
   },
 });

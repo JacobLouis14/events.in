@@ -6,6 +6,7 @@ const {
   deleteEvent,
   getAllEvents,
   getSpecificEvent,
+  filterEvents,
 } = require("../controllers/events");
 const { isAuthorized } = require("../middlewares/isAuthorized");
 
@@ -29,5 +30,8 @@ router.get("/get-allevents", getAllEvents);
 
 // get specific events
 router.get("/getspecific-event/:id", getSpecificEvent);
+
+// get filtered events
+router.get("/get-filteredevents", filterEvents);
 
 module.exports = router;

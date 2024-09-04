@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Ticket from "./Ticket";
 import { localiseDate } from "../utils/formatDate";
 
-const Card = ({ event, ticket }) => {
+const Card = ({ event, ticket, bookingDetails }) => {
   const navigate = useNavigate();
 
   // show ticket modal
@@ -36,7 +36,12 @@ const Card = ({ event, ticket }) => {
         </h6>
         <p className="fw-light">{localiseDate(event?.startdate)}</p>
       </div>
-      <Ticket show={ticketModal} handleClose={closeTicketModal} />
+      <Ticket
+        event={event}
+        show={ticketModal}
+        handleClose={closeTicketModal}
+        bookingDetails={bookingDetails}
+      />
     </>
   );
 };

@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   deleteEventApiHandler,
   eventAddApiHandler,
+  filterEventsApiHandler,
   getAllEventsApiHandler,
 } from "../../services/allapis";
 import toastHandler from "../../utils/toast";
@@ -67,6 +68,21 @@ const eventSlice = createSlice({
         state.error = action.payload.error;
         state.isLoading = false;
         toastHandler({ error: action.payload.message });
+      });
+    // filtered Events
+    builder
+      .addCase(filterEventsApiHandler.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(filterEventsApiHandler.fulfilled, (state, action) => {
+        state.events = action.payload.data;
+        state.error = null;
+        state.isLoading = false;
+      })
+      .addCase(filterEventsApiHandler.rejected, (state, action) => {
+        state.error = action.payload.response.data;
+        state.isLoading = false;
+        toastHandler({ error: action.payload.response.data.message });
       });
   },
 });

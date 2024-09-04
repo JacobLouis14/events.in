@@ -5,6 +5,7 @@ export const localiseDate = (dateDate) => {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   });
   return formatedDate;
 };
@@ -16,8 +17,30 @@ export const seperateDates = (startDate, endDate) => {
   let eD = new Date(endDate);
 
   while (cD <= eD) {
-    dates.push(localiseDate(cD));
+    dates.push(cD.toISOString());
     cD.setDate(cD.getDate() + 1);
   }
   return dates;
+};
+
+// checking valid date and time to book
+export const isValidToBook = (starttime, selectedDate) => {
+  const currentDate = new Date();
+  const sDate = new Date(selectedDate);
+  const [hours, minutes] = starttime.split(":").map(Number);
+  const formatedSelectedDate = new Date(
+    sDate.getUTCFullYear(),
+    sDate.getUTCMonth(),
+    sDate.getUTCDate(),
+    hours,
+    minutes
+  );
+  return currentDate < formatedSelectedDate;
+};
+
+// getting current time
+export const getCurrentTIme = () => {
+  const now = new Date();
+  const currentTime = now.toLocaleTimeString();
+  return currentTime;
 };
